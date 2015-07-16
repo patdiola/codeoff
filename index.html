@@ -44,10 +44,6 @@
       A piece has two properties: color (black/white), and count (number of pieces that have merged to make this piece). Pieces start as count=1 at the beginning of the game. Pieces may combine with friendly pieces by moving into them, yielding a single piece whose count is the sum of the two pieces' counts. A piece is allowed to move up to count squares horizontally, vertically, or diagonally. Pieces can not jump over other pieces. When moving, pieces are optionally able to split off any number of pieces less than their count. This split off piece can then be moved like a normal piece of that count. You capture enemy pieces by moving onto their square. Any count piece can destroy any enemy piece, except count=1 pieces are not able to capture at all.
     </p>
     <p>
-      You capture enemy pieces by moving onto their square. Your pieces cannot jump over other pieces. Any count piece can destroy any enemy piece, except count=1 pieces are not able to capture at all.
-    </p>
-
-    <p>
       Try the game right now: <a href="https://combo.retailnext.us" target="_blank">https://combo.retailnext.us</a>
     </p>
   </div>
@@ -59,8 +55,8 @@
 <li>One submission per-contestant.</li>
 <li>Submssions in any "reasonable" language that run on Linux are acceptable.</li>
 <li>Submissions are not allowed to perform any network or disk access.</li>
-<li>Each player will have a 5 minute game clock that elapses as your player ponders its next move. If your game clock reaches 0, you lose.</li>
-<li>Resources per-player: 2 cores, 4GB memory, no GPU.</li>
+<li>Each player will have a 5 minute game clock that elapses as during your turn. If your game clock reaches 0, you lose.</li>
+<li>Resources per-player: 2 cores, 8GB memory, no GPU.</li>
 <li>A player is allowed to continue "thinking" during its opponent's turn.</li>
 <li>Should any game or contest disputes arrise, Muir has the final say.</li>
 </ol>
@@ -69,20 +65,23 @@
 The contest will be comprised of a single round-roubin tournament where each submission plays every other submission twice, once as each color. Winners will be determined by counting the number of wins, where more wins is better. A tie in the number of wins is broken by summing the total number of pieces each player had after each game, where more remaining pieces is better. A tie in number of remaining pieces is broken by looking at the total time spent by each player "thinking", where less time is better.
     </p>
     <p>
-      I reserve the right to tweak the rules before the contest starts to ensure the contest is fair. I will have more information on the exact submission format later.
+      The submission window will close on Sunday September 13 at 11:59:59 PM PDT. I will have more information on the exact submission format and process later.
+    </p>
+    <p>
+      I reserve the right to tweak the rules before the contest starts to ensure the contest is fair.
     </p>
   </div>
 
   <div class="row" id="contest-prizes">
     <h2>Contest Prizes</h2>
     <p>
-      1st place: $300 Amazon gift card + impressive trophy + lots of glory
+      1st Place: $300 Amazon gift card + impressive trophy + lots of glory
     </p>
     <p>
       2nd Place: $100 Amazon gift card + some glory
     </p>
     <p>
-      3rd place: $50  Amazon gift card + a small amount of glory
+      3rd Place: $50  Amazon gift card + a small amount of glory
     </p>
     <p>
       Top non-engineering submission: $300 Amazon gift card + lots of glory
@@ -121,8 +120,8 @@ This is the message the server sends the player. It represents a request for the
       ...
 
       [
-        {"x": 0, "y": 4, "piece_count": 0},
-        {"x": 0, "y": 5, "piece_count": 0},
+        {"x": 4, "y": 0, "piece_count": 0},
+        {"x": 4, "y": 1, "piece_count": 0},
 
         ...
       ],
@@ -229,9 +228,9 @@ end
   </div>
 
   <div class="row" id="game-server">
-    <h2>Gamer Server</h2>
+    <h2>Game Server</h2>
     <p>
-      You can download the game server to play the game locally against the built-in sample AI, and to act as a frontend to interact with your player as you develop it.
+      You can download the game server to play the game locally against the built-in sample AI, and to act as a frontend to play against your player as you develop it.
     </p>
 
     <p>
@@ -241,7 +240,7 @@ end
         <li>Execute binary as <pre style="display: inline;">/path/to/combo http</pre> to start the game server listening on localhost:8080.</li>
         <li>Navigate your browser to <a href="http://localhost:8080" target="_blank">http://localhost:8080</a> to play against the server's built-in AI player.</li>
         <li>To play against an external player, start the server with the --cpu flag pointing to the program that implements the STDIN/STDOUT player API. For example, if you save the above Ruby example in /tmp/example.rb and make it executable, run <pre style="display: inline;">combo http --cpu=/tmp/example.rb</pre> to use example.rb as the AI you play against in the browser.</li>
-        <li>Reference the <a href="https://github.com/muirmanders/combo" target="_blank">game server source</a> to see how the built-in AI is implemented.</li>
+        <li>Reference the <a href="https://github.com/muirmanders/combo" target="_blank">game server source</a> to see how the built-in AI is implemented (see ai/evaluation.go).</li>
       </ol>
 
     </p>
