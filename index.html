@@ -1,0 +1,45 @@
+<!doctype html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>RetailNext Code-Off</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/css/normalize.min.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/css/foundation.min.css" type="text/css">
+  <link rel="stylesheet" href="css/main.css" type="text/css">
+</head>
+<body>
+
+  <div class="row">
+    <div class="rn-logo"></div>
+    <h1>RetailNext Code-Off</h1>
+  </div>
+
+  <div class="row hero">
+    <p>Get ready for the first annual RetailNext Code-Off! Have you been waiting for the opportunity to show off your 1337 skills and stick it to all your coworkers? Go head-to-head in a battle to win a board game designed by our own Muir Manders! The game? Combo. The trick? Code a better AI player than anyone else.</p>
+  </div>
+
+  <div class="row">
+    <h2>Combo</h2>
+    <p>
+      <a href="https://github.com/muirmanders/combo">https://github.com/muirmanders/combo</a>
+    </p>
+    <p>
+      Combo is an 8x8 board game. The top two rows start off with white pieces, and the bottom two rows black pieces. The players take turns moving a piece until the game is over. A player wins by capturing all his oponent's pieces. Black always goes first.
+    </p>
+    <p>
+      A piece has two properties: color (black/white), and count (number of pieces that have merged to make this piece). Pieces may combine with friendly pieces by moving into them. Two friendly pieces of any count are able to merge (e.g. a count=3 piece can merge with a count=4 to produce a count=7). A piece is allowed to move up to count squares horizontally, vertically, or diagonally. When moving, pieces are optionally able to split off any number of pieces less than their count. This split off piece can then be moved like a normal piece of that count.
+    </p>
+    <p>
+      You capture enemy pieces by moving onto their square. Your pieces cannot jump over other pieces. Any count piece can destroy any enemy piece, except count=1 pieces are not able to capture at all.
+    </p>
+    <p>Questions? Contact Muir on Slack.</p>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+</body>
+</html>
