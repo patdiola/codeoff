@@ -21,26 +21,231 @@
   </div>
 
   <div class="row hero">
-    <p>Get ready for the first annual RetailNext Code-Off! Have you been waiting for the opportunity to show off your 1337 skills and stick it to all your coworkers? Go head-to-head in a battle to win a board game designed by our own Muir Manders! The game? Combo. The trick? Code a better AI player than anyone else.</p>
+    <p>Announcing the first annual RetailNext Code-Off! It's time to show off your 1337 skills and stick it to all your coworkers. Contestants will write an AI player for a novel new board game called Combo.</p>
   </div>
 
   <div class="row">
-    <h2>Combo</h2>
+    <ul>
+      <li><a href="#game-rules">Game Rules</a></li>
+      <li><a href="#contest-rules">Contest Rules</a></li>
+      <li><a href="#contest-prizes">Contest Prizes</a></li>
+      <li><a href="#player-api">Player API</a></li>
+      <li><a href="#sample-player">Sample Player</a></li>
+      <li><a href="#game-server">Game Server</a></li>
+    </ul>
+  </div>
+
+  <div class="row" id="game-rules">
+    <h2>Game Rules</h2>
     <p>
-      <a href="https://github.com/muirmanders/combo">https://github.com/muirmanders/combo</a>
+      Combo is a two-player 8x8 board game. The game begins with two rows of black pieces and two rows of white pieces on opposing sides of the board. The players take turns moving a piece until the game is over. A player loses when all his pieces are captured or he has no available moves. Black always moves first.
     </p>
     <p>
-      Combo is an 8x8 board game. The top two rows start off with white pieces, and the bottom two rows black pieces. The players take turns moving a piece until the game is over. A player wins by capturing all his oponent's pieces. Black always goes first.
-    </p>
-    <p>
-      A piece has two properties: color (black/white), and count (number of pieces that have merged to make this piece). Pieces may combine with friendly pieces by moving into them. Two friendly pieces of any count are able to merge (e.g. a count=3 piece can merge with a count=4 to produce a count=7). A piece is allowed to move up to count squares horizontally, vertically, or diagonally. When moving, pieces are optionally able to split off any number of pieces less than their count. This split off piece can then be moved like a normal piece of that count.
+      A piece has two properties: color (black/white), and count (number of pieces that have merged to make this piece). Pieces start as count=1 at the beginning of the game. Pieces may combine with friendly pieces by moving into them, yielding a single piece whose count is the sum of the two pieces' counts. A piece is allowed to move up to count squares horizontally, vertically, or diagonally. Pieces can not jump over other pieces. When moving, pieces are optionally able to split off any number of pieces less than their count. This split off piece can then be moved like a normal piece of that count. You capture enemy pieces by moving onto their square. Any count piece can destroy any enemy piece, except count=1 pieces are not able to capture at all.
     </p>
     <p>
       You capture enemy pieces by moving onto their square. Your pieces cannot jump over other pieces. Any count piece can destroy any enemy piece, except count=1 pieces are not able to capture at all.
     </p>
-    <p>Questions? Contact Muir on Slack.</p>
+
+    <p>
+      Try the game right now: <a href="https://combo.retailnext.us" target="_blank">https://combo.retailnext.us</a>
+    </p>
   </div>
 
+  <div class="row" id="contest-rules">
+    <h2>Contest Rules</h2>
+    <p>
+      <ol>
+<li>One submission per-contestant.</li>
+<li>Submssions in any "reasonable" language that run on Linux are acceptable.</li>
+<li>Submissions are not allowed to perform any network or disk access.</li>
+<li>Each player will have a 5 minute game clock that elapses as your player ponders its next move. If your game clock reaches 0, you lose.</li>
+<li>Resources per-player: 2 cores, 4GB memory, no GPU.</li>
+<li>A player is allowed to continue "thinking" during its opponent's turn.</li>
+<li>Should any game or contest disputes arrise, Muir has the final say.</li>
+</ol>
+    </p>
+    <p>
+The contest will be comprised of a single round-roubin tournament where each submission plays every other submission twice, once as each color. Winners will be determined by counting the number of wins, where more wins is better. A tie in the number of wins is broken by summing the total number of pieces each player had after each game, where more remaining pieces is better. A tie in number of remaining pieces is broken by looking at the total time spent by each player "thinking", where less time is better.
+    </p>
+    <p>
+      I reserve the right to tweak the rules before the contest starts to ensure the contest is fair. I will have more information on the exact submission format later.
+    </p>
+  </div>
+
+  <div class="row" id="contest-prizes">
+    <h2>Contest Prizes</h2>
+    <p>
+      1st place: $300 Amazon gift card + impressive trophy + lots of glory
+    </p>
+    <p>
+      2nd Place: $100 Amazon gift card + some glory
+    </p>
+    <p>
+      3rd place: $50  Amazon gift card + a small amount of glory
+    </p>
+    <p>
+      Top non-engineering submission: $300 Amazon gift card + lots of glory
+    </p>
+  </div>
+
+  <div class="row" id="player-api">
+    <h2>Player API</h2>
+    <p>
+This is the API contest submissions must implement. The combo game server will start your program once and then communicate with it over STDIN/STDOUT for the duration of the game, sending and receiving newline terminated JSON messages. There is only one type of message sent to your program, and only one type expected as a response. If your player makes an illegal move, you lose immediately.
+    </p>
+
+    <h3>Request For Player Move</h3>
+
+    <p>
+This is the message the server sends the player. It represents a request for the player to choose his next move. A sample message is included below (whitespace added for readability, some squares omitted for brevity):
+<pre>
+{
+  // the color you are playing as
+  "color": "white",
+
+  // the board state
+  "board": {
+    "width": 8,
+    "height": 8,
+
+    // two dimensional array of board squares
+    "squares": [
+      [
+        {"x": 0, "y": 0, "piece_color": "white", "piece_count": 1},
+        {"x": 0, "y": 1, "piece_color": "white", "piece_count": 1},
+
+        ...
+      ],
+
+      ...
+
+      [
+        {"x": 0, "y": 4, "piece_count": 0},
+        {"x": 0, "y": 5, "piece_count": 0},
+
+        ...
+      ],
+
+      ...
+
+      [
+        ...
+
+        {"x": 7, "y": 6, "piece_color": "black", "piece_count": 1},
+        {"x": 7, "y": 7, "piece_color": "black", "piece_count": 1}
+      ]
+    ]
+  }
+}
+</pre>
+</p>
+
+<h3>Player's Move Choice</h3>
+
+<p>
+This is the message the player sends back to the server. It represents the player's move choice (whitespace added for readability):
+<pre>
+{
+  "from": {
+    "x": 3,
+    "y": 2
+  },
+  "to": {
+    "x": 5,
+    "y": 4,
+  },
+  "piece_count": 3
+}
+</pre>
+</p>
+  </div>
+
+  <div class="row" id="sample-player">
+    <h2>Sample Player</h2>
+
+    <p>
+      Here is a sample player in Ruby that implements the player API:
+
+      <pre>
+#!/usr/bin/env ruby
+
+require "json"
+
+# calculate our list of possible moves
+def available_moves(cmd)
+  moves = []
+
+  cmd['board']['squares'].flatten.each do |sq|
+    if sq['piece_color'] != cmd['color'] || sq['piece_count'] == 0
+      next
+    end
+
+    [-1, 0, 1].repeated_permutation(2).each do |dx, dy|
+      if dx == 0 && dy == 0
+        next
+      end
+
+      x, y = sq["x"], sq["y"]
+
+      1.upto(sq["piece_count"]) do |distance|
+        x += dx
+        y += dy
+
+        if x < 0 || x >= cmd['board']['width'] || y < 0 || y >= cmd['board']['height']
+          break
+        end
+
+        # "p"otential square
+        psq = cmd['board']['squares'][x][y]
+
+        distance.upto(sq['piece_count']) do |split_size|
+          if split_size > 1 || psq['piece_count'] == 0 || psq['piece_color'] == cmd['color']
+            moves << {
+              "from" => {"x" => sq["x"], "y" => sq["y"]},
+              "to" => {"x" => psq["x"], "y" => psq["y"]},
+              "piece_count" => split_size,
+            }
+          end
+        end
+
+        if psq["piece_count"] > 0
+          break
+        end
+      end
+    end
+  end
+
+  return moves
+end
+
+STDIN.each_line do |line|
+  # pick a random move based on board state and send back to server
+  STDOUT.puts(JSON[available_moves(JSON[line]).sample])
+  STDOUT.flush
+end
+</pre>
+    </p>
+  </div>
+
+  <div class="row" id="game-server">
+    <h2>Gamer Server</h2>
+    <p>
+      You can download the game server to play the game locally against the built-in sample AI, and to act as a frontend to interact with your player as you develop it.
+    </p>
+
+    <p>
+      <ol>
+        <li>Download game server binary for <a href="binaries/mac/combo">Mac</a> or <a href="binaries/linux/combo">Linux</a>.</li>
+        <li>Make binary executable: <pre style="display: inline;">chmod +x /path/to/combo</pre></li>
+        <li>Execute binary as <pre style="display: inline;">/path/to/combo http</pre> to start the game server listening on localhost:8080.</li>
+        <li>Navigate your browser to <a href="http://localhost:8080" target="_blank">http://localhost:8080</a> to play against the server's built-in AI player.</li>
+        <li>To play against an external player, start the server with the --cpu flag pointing to the program that implements the STDIN/STDOUT player API. For example, if you save the above Ruby example in /tmp/example.rb and make it executable, run <pre style="display: inline;">combo http --cpu=/tmp/example.rb</pre> to use example.rb as the AI you play against in the browser.</li>
+        <li>Reference the <a href="https://github.com/muirmanders/combo" target="_blank">game server source</a> to see how the built-in AI is implemented.</li>
+      </ol>
+
+    </p>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
 </body>
 </html>
